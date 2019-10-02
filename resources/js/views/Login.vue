@@ -12,10 +12,10 @@
                         </div>
                     </div>
                     <div class="card-body px-lg-5 py-lg-5">
-                        <div class="text-center text-muted mb-4">
-                            <small>Or sign in with credentials</small>
-                        </div>
-                        <form role="form">
+                         <div v-html="model.notification">
+                                {{ model.notification }}
+                         </div>
+                        <form role="form" class="login" @submit.prevent="login">
                             <base-input class="input-group-alternative mb-3"
                                         placeholder="Email"
                                         addon-left-icon="ni ni-email-83"
@@ -28,12 +28,8 @@
                                         addon-left-icon="ni ni-lock-circle-open"
                                         v-model="model.password">
                             </base-input>
-
-                            <base-checkbox class="custom-control-alternative">
-                                <span class="text-muted">Remember me</span>
-                            </base-checkbox>
                             <div class="text-center">
-                                <base-button v-on:click="login" type="primary" class="my-4">Sign in</base-button>
+                                <button type="submit" class="my-4 btn btn-primary">Sign in</button>
                             </div>
                         </form>
                     </div>
@@ -53,15 +49,46 @@
       return {
         model: {
           email: '',
-          password: ''
+          password: '',
+          notification: '',
         }
       }
     },
       methods: {
-        login: function()
-        {
-            console.log(this.model.email+" "+this.model.passwordx)
-        }
+          login : function() {
+            let email = this.model.email
+            let password = this.model.password
+            this.$store.dispatch('login', { email, password })
+            .then(response => {
+                if(response == '<div class="alert alert-danger mb-5" role="alert"><strong>ERROR :</strong><br> This user already logged in</div>' || response == '<div class="alert alert-danger mb-5" role="alert"><strong>ERROR :</strong><br> Request doesnt match with our requirement</div>'){
+                    this.model.notification = response;
+                }else{
+                    this.$router.push('/dashboard');
+                }
+            })
+            .catch(err => console.log(err))
+          }
+        // login: function()
+        // {
+        //    axios.post('../../api/login', { 'email' : this.model.email, 'password' : this.model.password }).then(response => {
+        //         if(response.data.status == "error"){
+        //             console.log(response.data.response.message);
+        //         }else{
+        //             if(response.data.response.token)
+        //             {
+        //                 try{
+        //                     localStorage.setItem('usersToken', JSON.stringify(response.data.response.token));
+        //                     console.log("Token saved");
+        //                 }catch(err){
+        //                     console.log("Token not saved with error : "+err);
+        //                 }
+        //             }else{
+        //                 console.log('Token already created');
+        //             }
+        //         }
+        //         }
+        //    )
+        // }
     }
   }
 </script>

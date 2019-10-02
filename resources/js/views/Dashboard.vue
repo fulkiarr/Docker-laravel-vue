@@ -1,71 +1,59 @@
   <template>
     <div>
         <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8">
-            <!-- Card stats -->
-            <div class="row">
-                <div class="col-xl-3 col-lg-6">
-                    <stats-card title="Total traffic"
-                                type="gradient-red"
-                                sub-title="350,897"
-                                icon="ni ni-active-40"
-                                class="mb-4 mb-xl-0"
-                    >
-
-                        <template slot="footer">
-                            <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
-                            <span class="text-nowrap">Since last month</span>
-                        </template>
-                    </stats-card>
-                </div>
-                <div class="col-xl-3 col-lg-6">
-                    <stats-card title="Total traffic"
-                                type="gradient-orange"
-                                sub-title="2,356"
-                                icon="ni ni-chart-pie-35"
-                                class="mb-4 mb-xl-0"
-                    >
-
-                        <template slot="footer">
-                            <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 12.18%</span>
-                            <span class="text-nowrap">Since last month</span>
-                        </template>
-                    </stats-card>
-                </div>
-                <div class="col-xl-3 col-lg-6">
-                    <stats-card title="Sales"
-                                type="gradient-green"
-                                sub-title="924"
-                                icon="ni ni-money-coins"
-                                class="mb-4 mb-xl-0"
-                    >
-
-                        <template slot="footer">
-                            <span class="text-danger mr-2"><i class="fa fa-arrow-down"></i> 5.72%</span>
-                            <span class="text-nowrap">Since last month</span>
-                        </template>
-                    </stats-card>
-
-                </div>
-                <div class="col-xl-3 col-lg-6">
-                    <stats-card title="Performance"
-                                type="gradient-info"
-                                sub-title="49,65%"
-                                icon="ni ni-chart-bar-32"
-                                class="mb-4 mb-xl-0"
-                    >
-
-                        <template slot="footer">
-                            <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 54.8%</span>
-                            <span class="text-nowrap">Since last month</span>
-                        </template>
-                    </stats-card>
-                </div>
-            </div>
+            <h1 class="display-1 text-white">Site Name
+            <p class="float-right pt-4 text-white font-weight-bold">Last updated : 2019-10-30 12:30:20</p></h1>
         </base-header>
-
+        <!--Maps-->
         <!--Charts-->
         <div class="container-fluid mt--7">
+             <div class="row">
+                <div class="col">
+                    <div class="card shadow bg-default border-0">
+                        <div id="map-canvas" class="map-canvas" data-lat="40.748817" data-lng="-73.985428" style="height: 600px;"></div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
+                <div class="col-xl-12 mt-5 mb-xl-0">
+                    <div class="card shadow bg-default text-white">
+                        <div class="row mx-4 my-4">
+                                <div class="col-xl-3">
+                                    <div class="card card-stats" style="border: 1px solid rgba(000, 000, 000, 0.5) !important">
+                                        <div class="card-body">
+                                            <apexchart type=radialBar height=350 :options="chartOptions" :series="series" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-3">
+                                    <div class="card card-stats" style="border: 1px solid rgba(000, 000, 000, 0.5) !important">
+                                        <div class="card-body">
+                                            <apexchart type=radialBar height=350 :options="chartOptions" :series="series" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-3">
+                                    <div class="card card-stats" style="border: 1px solid rgba(000, 000, 000, 0.5) !important">
+                                        <div class="card-body">
+                                            <apexchart type=radialBar height=350 :options="chartOptions" :series="series" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-3">
+                                    <div class="card card-stats" style="border: 1px solid rgba(000, 000, 000, 0.5) !important">
+                                        <div class="card-body">
+                                            <apexchart type=radialBar height=350 :options="chartOptions" :series="series" />
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            <!-- <div class="row">
                 <div class="col-xl-8 mb-5 mb-xl-0">
                     <card type="default" header-classes="bg-transparent">
                         <div slot="header" class="row align-items-center">
@@ -124,34 +112,75 @@
                         </bar-chart>
                     </card>
                 </div>
-            </div>
+            </div> -->
             <!-- End charts-->
 
             <!--Tables-->
-            <div class="row mt-5">
+            <!-- <div class="row mt-5">
                 <div class="col-xl-8 mb-5 mb-xl-0">
                     <page-visits-table></page-visits-table>
                 </div>
                 <div class="col-xl-4">
                     <social-traffic-table></social-traffic-table>
                 </div>
-            </div>
+            </div> -->
             <!--End tables-->
+            </div>
         </div>
-
-    </div>
 </template>
 <script>
   // Charts
   import * as chartConfigs from '@/components/Charts/config';
   import LineChart from '@/components/Charts/LineChart';
   import BarChart from '@/components/Charts/BarChart';
-
   // Tables
   import SocialTrafficTable from './Dashboard/SocialTrafficTable';
   import PageVisitsTable from './Dashboard/PageVisitsTable';
 
   export default {
+      mounted() {
+      let google= window.google
+      let map = document.getElementById('map-canvas');
+      let lat = map.getAttribute('data-lat');
+      let lng = map.getAttribute('data-lng');
+
+      const myLatlng = new google.maps.LatLng(lat, lng);
+      const mapOptions = {
+        zoom: 12,
+        scrollwheel: false,
+        center: myLatlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        styles: [
+          {"featureType":"administrative","elementType":"labels.text.fill","stylers":[{"color":"#444444"}]},
+          {"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2f2f2"}]},
+          {"featureType":"poi","elementType":"all","stylers":[{"visibility":"off"}]},
+          {"featureType":"road","elementType":"all","stylers":[{"saturation":-100},{"lightness":45}]},
+          {"featureType":"road.highway","elementType":"all","stylers":[{"visibility":"simplified"}]},
+          {"featureType":"road.arterial","elementType":"labels.icon","stylers":[{"visibility":"off"}]},
+          {"featureType":"transit","elementType":"all","stylers":[{"visibility":"off"}]},
+          {"featureType":"water","elementType":"all","stylers":[{"color":'#5e72e4'},{"visibility":"on"}]}]
+      }
+
+      map = new google.maps.Map(map, mapOptions);
+
+      const marker = new google.maps.Marker({
+        position: myLatlng,
+        map: map,
+        animation: google.maps.Animation.DROP,
+        title: 'Hello World!'
+      });
+
+      const contentString = '<div class="info-window-content"><h2>Argon Dashboard</h2>' +
+        '<p>A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</p></div>';
+
+      const infowindow = new google.maps.InfoWindow({
+        content: contentString
+      });
+
+      google.maps.event.addListener(marker, 'click', function() {
+        infowindow.open(map, marker);
+      });
+    },
     components: {
       LineChart,
       BarChart,
@@ -160,46 +189,80 @@
     },
     data() {
       return {
-        bigLineChart: {
-          allData: [
-            [0, 20, 10, 30, 15, 40, 20, 60, 60],
-            [0, 20, 5, 25, 10, 30, 15, 40, 40]
-          ],
-          activeIndex: 0,
-          chartData: {
-            datasets: [],
-            labels: [],
-          },
-          extraOptions: chartConfigs.blueChartOptions,
-        },
-        redBarChart: {
-          chartData: {
-            labels: ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            datasets: [{
-              label: 'Sales',
-              data: [25, 20, 30, 22, 17, 29]
-            }]
-          }
-        }
+          series: [30],
+                chartOptions: {
+                chart: {
+                    offsetY: -20,
+                    toolbar: {
+                    show: false
+                    }
+                },
+                plotOptions: {
+                    radialBar: {
+                    startAngle: -90,
+                    endAngle: 90,
+                    hollow: {
+                        margin: 0,
+                        size: '70%',
+                        background: '#fff',
+                        position: 'front',
+                        dropShadow: {
+                        enabled: true,
+                        top: 3,
+                        left: 0,
+                        blur: 1,
+                        opacity: 0.24
+                        }
+                    },
+                    track: {
+                        background: '#fff',
+                        strokeWidth: '97%',
+                        margin: 0, // margin is in pixels
+                        dropShadow: {
+                        enabled: true,
+                        top: -3,
+                        left: 0,
+                        blur: 4,
+                        opacity: 0.35
+                        }
+                    },
+
+                    dataLabels: {
+                        name: {
+                        offsetY: -40,
+                        show: true,
+                        color: '#888',
+                        fontSize: '10px'
+                        },
+                        value: {
+                        formatter: function (val) {
+                            return parseInt(val);
+                        },
+                        offsetY: -10,
+                        color: '#111',
+                        fontSize: '36px',
+                        show: true,
+                        }
+                    }
+                    }
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                    shade: 'light',
+                    shadeIntensity: 0.4,
+                    inverseColors: false,
+                    opacityFrom: 1,
+                    opacityTo: 1,
+                    stops: [0, 100]
+                    }
+                },
+                stroke: {
+                    lineCap: 'round'
+                },
+                labels: ['PM 25'],
+                }
       };
-    },
-    methods: {
-      initBigChart(index) {
-        let chartData = {
-          datasets: [
-            {
-              label: 'Performance',
-              data: this.bigLineChart.allData[index]
-            }
-          ],
-          labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        };
-        this.bigLineChart.chartData = chartData;
-        this.bigLineChart.activeIndex = index;
-      }
-    },
-    mounted() {
-      this.initBigChart(0);
     }
   };
 </script>
