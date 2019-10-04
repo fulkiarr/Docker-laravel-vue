@@ -6,6 +6,7 @@ import store from './stores/store_auth.js'
 import Axios from 'axios'
 import ArgonDashboard from './plugins/argon-dashboard'
 import VueApexCharts from 'vue-apexcharts'
+// import * as VueGoogleMaps from 'vue2-google-maps'
 
 Vue.component('apexchart', VueApexCharts)
 //Route

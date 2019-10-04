@@ -17,4 +17,5 @@ Route::post('checkauth', 'Module\MainController@checkauth');
 
 Route::group(['middleware' => ['auth:api']], function () {
     Route::post('logout', 'Module\MainController@logout');
+    Route::get('/resources/log/', 'Module\MainController@logapi');
 });

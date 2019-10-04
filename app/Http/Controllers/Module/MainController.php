@@ -27,6 +27,11 @@ class MainController extends Controller
     }
 
     //Resource API
+    public function logapi()
+    {
+        $data = DB::table('log')->where('site_id', '=', '00001')->first();
+        return response()->json(['data' => $data], 200);
+    }
     public function logout(Request $request)
     {
             $value = $request->bearerToken();

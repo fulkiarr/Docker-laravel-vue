@@ -2,7 +2,7 @@
     <base-nav class="navbar-top navbar-dark"
               id="navbar-main"
               :show-toggle-button="false"
-              expand>   
+              expand>
         <ul class="navbar-nav align-items-center d-none d-md-flex ml-lg-auto">
             <li class="nav-item dropdown">
                 <base-dropdown class="nav-link pr-0">

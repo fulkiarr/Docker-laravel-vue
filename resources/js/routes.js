@@ -48,10 +48,10 @@ let router = new Router({
       if (store.getters.isLoggedIn) {
         next()
         return
-      }
-      next('/login')
-    } else {
-      next()
+     }
+        next('/login')
+    }else{
+        next()
     }
   })
 
